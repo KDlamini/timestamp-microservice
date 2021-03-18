@@ -20,10 +20,17 @@ app.get("/", function (req, res) {
 
 
 //first API endpoint...
+app.get("/api/hello", function (req, res) {
+  res.json({greeting: 'hello API'});
+});
+
+
 app.get("/api/timestamp", (req, res) => {
   let date = new Date();
-
-  res.json({"unix": date.getTime(), "uct": date.toUTCString()});
+  res.json({
+    "unix": date.getTime(),
+    "utc": date.toUTCString()
+  });
 });
 
 // second API endpoint with paramters...
@@ -32,14 +39,15 @@ app.get("/api/timestamp/:date_str", function (req, res) {
 
   let date = new Date(isNaN(date_str) ? date_str : parseInt(date_str));
 
-  if (date === null) {
-    res.json({"unix": null, "uct": "Invalid date"});
+  if (date == "Invalid Date") {
+    res.json({ "error": "Invalid Date" });
   } else {
-    res.json({"unix": date.getTime(), "uct": date.toUTCString()});
+    res.json({  
+      "unix": date.getTime(),
+      "utc": date.toUTCString() 
+    });
   }
 });
-
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
