@@ -19,9 +19,24 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+//first API endpoint...
+app.get("/api/timestamp", (req, res) => {
+  let date = new Date();
+
+  res.json({"unix": date.getTime(), "uct": date.toUTCString()});
+});
+
+// second API endpoint with paramters...
+app.get("/api/timestamp/:date_str", function (req, res) {
+  const { date_str } = req.params;
+
+  let date = new Date(isNaN(date_str) ? date_str : parseInt(date_str));
+
+  if (date === null) {
+    res.json({"unix": null, "uct": "Invalid date"});
+  } else {
+    res.json({"unix": date.getTime(), "uct": date.toUTCString()});
+  }
 });
 
 
